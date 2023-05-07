@@ -1,0 +1,14 @@
+Package: chonos-neighbors
+Version: 1.0.0
+Priority:
+Architecture: all
+Essential:
+Depends: 
+Pre-depends: python3.9 | python3.10
+Suggests:
+Installed-Size:
+Maintainer: chon@grupo.cefet-rj.br
+Conflicts:
+Replaces:
+Provides:
+Description: ChonBot Auto Discovery.

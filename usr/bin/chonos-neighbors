@@ -1,0 +1,40 @@
+#! /bin/sh
+EmbedMAS_HOME=/opt/chonos-embMAS
+EmbedMAS_TMP=/dev/shm/.embedMAS/neighbors
+mkdir -p $EmbedMAS_TMP
+
+while getopts h:-: flag 
+    do
+    case "${flag}" in
+        h) task=${OPTARG};;  
+        -) opt=${OPTARG};;
+    esac
+done
+
+if [ "$opt" = "start" ]
+then
+	pid=$$
+	chonos-log -e "[chonos-neighbors] Ativando a auto discoberta de ChonBots ($pid)"
+	echo $pid > $EmbedMAS_TMP/chonos-neighbors.pid
+	/usr/bin/python3 /opt/chonos-embMAS/bin/lan/neighborhood.py 
+elif [ "$opt" = "stop" ]
+then
+	if [ -f $EmbedMAS_TMP/chonos-neighbors.pid ]
+	then
+		pid=$(cat $EmbedMAS_TMP/chonos-neighbors.pid)
+		rm $EmbedMAS_TMP/chonos-neighbors.pid
+		echo "Parando $pid" 
+		pkill -P $pid
+	fi
+elif [ "$opt" = "list" ]
+then
+# Leitura do arquivo e remoção de duplicatas
+    cat $EmbedMAS_TMP/list 2>>/dev/null | \
+    sort | \
+    uniq | \
+    # Transformação em JSON válido
+    awk 'BEGIN{printf "["} { printf "%s{\"nome\":\"%s\",\"ip\":\"%s\"}", sep, $1, $2; sep="," } END { print "]" }'
+elif [ "$opt" = "forget" ]
+then
+    rm $EmbedMAS_TMP/list
+fi

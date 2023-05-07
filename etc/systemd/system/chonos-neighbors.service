@@ -1,0 +1,13 @@
+[Unit]
+Description=ChonOS Task Manager
+After=network.target
+
+[Service]
+ExecStart=/bin/sh /usr/bin/chonos-neighbors --start
+ExecStop=/bin/sh /usr/bin/chonos-neighbors --stop
+User=root
+WorkingDirectory=/root
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
