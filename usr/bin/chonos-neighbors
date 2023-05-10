@@ -33,7 +33,7 @@ then
     sort | \
     uniq | \
     # Transformação em JSON válido
-    awk 'BEGIN{printf "["} { printf "%s{\"nome\":\"%s\",\"ip\":\"%s\"}", sep, $1, $2; sep="," } END { print "]" }'
+    awk 'BEGIN{printf "["} { printf "%s{\"name\":\"%s\",\"ip\":\"%s\"}", sep, $1, $2; sep="," } END { print "]" }'
 elif [ "$opt" = "forget" ]
 then
     rm $EmbedMAS_TMP/list
