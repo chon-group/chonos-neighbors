@@ -1,6 +1,7 @@
-# ChonBot auto discovery
+# ChonBot auto discovery service
 
-|![](https://github.com/chon-group/chonIDE/assets/32855001/28799173-245a-4ce0-8ace-0cd2c06733d2)|
+
+|![chonOS-Neighbors-capa](https://github.com/chon-group/dpkg-chonos-neighbors/assets/32855001/66f06c91-a113-42b6-a177-50015e176659)|
 |:--:|
 |ChonOS-Neighbors implements auto discovery of _Cognitive Hardware on Networks Operating System (chonOS)_ on the Local Area Network.|
 
