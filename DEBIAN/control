@@ -3,7 +3,7 @@ Version: 1.0.3
 Priority:
 Architecture: all
 Essential:
-Depends: 
+Depends: chonos-log
 Pre-depends: python3 | python3.9 | python3.10 | python3.11 | python3.12
 Suggests:
 Installed-Size:
