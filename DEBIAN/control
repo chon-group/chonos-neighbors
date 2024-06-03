@@ -1,10 +1,10 @@
 Package: chonos-neighbors
-Version: 1.0.2
+Version: 1.0.3
 Priority:
 Architecture: all
 Essential:
 Depends: 
-Pre-depends: python3 | python3.9 | python3.10 | python3.11
+Pre-depends: python3 | python3.9 | python3.10 | python3.11 | python3.12
 Suggests:
 Installed-Size:
 Maintainer: chon@grupo.cefet-rj.br
