@@ -1,0 +1,7 @@
+#!/bin/bash
+systemctl enable chonos-neighbors.service
+
+if [ -d /run/systemd/system ]; then
+    systemctl daemon-reload
+    systemctl start chonos-neighbors.service
+fi

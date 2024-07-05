@@ -1,0 +1,6 @@
+#!/bin/bash
+if [ -d /run/systemd/system ]; then
+    systemctl stop chonos-neighbors.service
+    systemctl daemon-reload
+fi
+systemctl disable chonos-neighbors.service
