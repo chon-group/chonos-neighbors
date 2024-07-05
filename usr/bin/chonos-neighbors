@@ -17,6 +17,7 @@ then
 	pid=$$
 	chonos-log -e "[chonos-neighbors] Ativando a auto discoberta de ChonBots ($pid)"
 	echo $pid > $EmbedMAS_TMP/chonos-neighbors.pid
+    /usr/bin/chonos-neighbors --forget
 	/usr/bin/python3 $EmbedMAS_HOME/bin/lan/neighborhood.py &
 
     /usr/bin/inotifywait -m -e modify "$EmbedMAS_TMP/list" | while read path _; do
