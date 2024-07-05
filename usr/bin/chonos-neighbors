@@ -1,6 +1,7 @@
 #! /bin/sh
-EmbedMAS_HOME=/opt/chonos-embMAS
+EmbedMAS_HOME=/opt/group.chon
 EmbedMAS_TMP=/dev/shm/.embedMAS/neighbors
+FQDN=".bot.chon.group"
 mkdir -p $EmbedMAS_TMP
 
 while getopts h:-: flag 
@@ -16,25 +17,55 @@ then
 	pid=$$
 	chonos-log -e "[chonos-neighbors] Ativando a auto discoberta de ChonBots ($pid)"
 	echo $pid > $EmbedMAS_TMP/chonos-neighbors.pid
-	/usr/bin/python3 /opt/chonos-embMAS/bin/lan/neighborhood.py 
+	/usr/bin/python3 $EmbedMAS_HOME/bin/lan/neighborhood.py &
+
+    /usr/bin/inotifywait -m -e modify "$EmbedMAS_TMP/list" | while read path _; do
+        /usr/bin/chonos-neighbors --update
+    done
+
 elif [ "$opt" = "stop" ]
 then
 	if [ -f $EmbedMAS_TMP/chonos-neighbors.pid ]
 	then
-		pid=$(cat $EmbedMAS_TMP/chonos-neighbors.pid)
+        python_process=$(ps -aux | grep "group.chon/bin/lan/neighborhood.py" | grep -v grep | head -1 | xargs | cut -d " " -f 2)
+		kill -9 $python_process
+        pid=$(cat $EmbedMAS_TMP/chonos-neighbors.pid)
 		rm $EmbedMAS_TMP/chonos-neighbors.pid
 		echo "Parando $pid" 
 		pkill -P $pid
 	fi
-elif [ "$opt" = "list" ]
-then
-# Leitura do arquivo e remoção de duplicatas
-    cat $EmbedMAS_TMP/list 2>>/dev/null | \
-    sort | \
-    uniq | \
-    # Transformação em JSON válido
-    awk 'BEGIN{printf "["} { printf "%s{\"name\":\"%s\",\"ip\":\"%s\"}", sep, $1, $2; sep="," } END { print "]" }'
+elif [ "$opt" = "list" ]; then
+
+    temp_file=$(mktemp -p $EmbedMAS_TMP)
+
+    while read -r name ip; do
+        # Update the temporary file with the latest IP for each name
+        sed -i "/^$name /d" "$temp_file"
+        echo "$name $ip" >> "$temp_file"
+    done < "$EmbedMAS_TMP/list"
+
+    # Start JSON output
+    json_output="["
+
+    # Read the temporary file and create JSON objects
+    while read -r name ip; do
+        json_output="${json_output}{\"name\":\"$name$FQDN\",\"ip\":\"$ip\"},"
+    done < "$temp_file"
+
+    list="${json_output%,}]"
+
+    rm -f "$temp_file"
+    echo "$list"
+    exit 0
 elif [ "$opt" = "forget" ]
 then
-    rm $EmbedMAS_TMP/list
+    echo -n "" > $EmbedMAS_TMP/list
+elif [ "$opt" = "update" ]
+then
+    /usr/bin/chonosDDNSManager --conf >> /dev/null
+    list=$(/usr/bin/chonos-neighbors --list)
+
+    echo "$list" | jq -r '.[] | "\(.ip) \(.name)"' | while read -r line; do
+        echo "$line$FQDN #chonos-neighbors service" >> /etc/hosts
+    done
 fi
