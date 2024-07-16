@@ -14,6 +14,20 @@ sudo apt update
 sudo apt install chonos-neighbors
 ```
 
+### DESCRIPTION
+
+List of options and arguments:
+|Argument|Description|
+|-|-|
+|___--list___|list of the discovered ChonBots in the local area network.|
+|___--forget___|clean the list of discovered ChonBots.|
+|___--start___|start the chonos-neighbors service.|
+|___--stop___|stop the chonos-neighbors service.|
+
+### EXAMPLE
+
+
+
 ## COPYRIGHT
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />The ChonOS-Neighbors is part of the [_Cognitive Hardware on Network - IDE (ChonIDE)_](https://ide.chon.group) and is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. The licensor cannot revoke these freedoms as long as you follow the license terms:
 
