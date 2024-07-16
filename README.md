@@ -25,6 +25,7 @@ List of options and arguments:
 |___--stop___|stop the chonos-neighbors service.|
 
 ### EXAMPLE
+![image](https://github.com/user-attachments/assets/cdfb2531-13a0-4f99-8a23-b65fc44054f8)
 
 
 
